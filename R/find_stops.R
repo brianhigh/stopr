@@ -1,6 +1,6 @@
 #' Find Stops
 #'
-#' Find stops made in a route given coordinate and timestamps from a GPS track.
+#' Find stops made in a route given coordinates and timestamps from a GPS track.
 #' @param latitude (numeric) GPS Latitude.
 #' @param longitude (numeric) GPS Longitude.
 #' @param datetime (datetime) GPS Timestamp.

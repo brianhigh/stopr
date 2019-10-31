@@ -25,7 +25,7 @@ find_stops(latitude, longitude, datetime, stop_min_duration_s = 10,
     subset of the input data.
 }
 \description{
-Find stops made in a route given coordinate and timestamps from a GPS track.
+Find stops made in a route given coordinates and timestamps from a GPS track.
 }
 \section{Details}{
 
