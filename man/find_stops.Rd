@@ -38,7 +38,7 @@ observations per stop.
 }
 
 \examples{
-find_stops(latitude, longitude, datetime)
+\dontrun{find_stops(latitude, longitude, datetime)}
 }
 \keyword{GPS,}
 \keyword{stops}

@@ -20,7 +20,7 @@
 #' @importFrom magrittr %>%
 #' @export
 #' @examples
-#' find_stops(latitude, longitude, datetime)
+#' \dontrun{find_stops(latitude, longitude, datetime)}
 find_stops <- function(latitude, longitude, datetime, stop_min_duration_s = 10,
                        digits = 3, k = 3) {
   tibble::tibble(latitude = as.numeric(latitude),
