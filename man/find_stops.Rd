@@ -21,8 +21,8 @@ find_stops(latitude, longitude, datetime, stop_min_duration_s = 10,
 \item{k}{(integer) Window length for rolling median. (Must be odd.)}
 }
 \value{
-(tibble) The coordinates and times of the identified stops, as a
-    subset of the input data.
+(tibble) The coordinates and timestamps of the identified stops, 
+    along with the stop durations (integer), will be returned as a tibble.
 }
 \description{
 Find stops made in a route given coordinates and timestamps from a GPS track.

@@ -7,8 +7,8 @@
 #' @param stop_min_duration_s (integer) Minimum stop duration cutoff in seconds.
 #' @param digits (integer) Decimal places used for rounding.
 #' @param k (integer) Window length for rolling median. (Must be odd.)
-#' @return (tibble) The coordinates and times of the identified stops, as a
-#'     subset of the input data.
+#' @return (tibble) The coordinates and timestamps of the identified stops, 
+#'     along with the stop durations (integer), will be returned as a tibble.
 #' @keywords GPS, stops
 #' @section Details:
 #' Stops are determined by finding sequential observations near the same location.
