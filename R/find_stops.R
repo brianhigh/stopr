@@ -17,16 +17,16 @@
 #' The stop duration cutoff \code{stop_min_duration_s} is in seconds, assuming
 #' one observation per second. Otherwise, consider this as the minimum number of
 #' observations per stop.
-#' @importFrom magrittr %>%
-#' @export
 #' @examples
-#' \dontrun{find_stops(latitude, longitude, datetime)}
+#' \dontrun{
+#' find_stops(latitude, longitude, datetime)
+#' }
 find_stops <- function(latitude, longitude, datetime, stop_min_duration_s = 10,
                        digits = 3, k = 3) {
   tibble::tibble(latitude = as.numeric(latitude),
          longitude = as.numeric(longitude),
          datetime = lubridate::as_datetime(datetime)) %>%
-    dplyr::mutate_at(.vars = vars(latitude, longitude),
+    dplyr::mutate_at(.vars = dplyr::vars(latitude, longitude),
             .funs = list(rnd = ~round(zoo::rollmedianr(., k, NA), digits))) %>%
     dplyr::mutate(loc = paste(latitude_rnd, longitude_rnd, sep = ',')) %>%
     dplyr::group_by(runid = rle(loc)$lengths %>% rep(seq_along(.), .)) %>%
