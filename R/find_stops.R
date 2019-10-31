@@ -19,7 +19,9 @@
 #' observations per stop.
 #' @examples
 #' \dontrun{
-#' find_stops(latitude, longitude, datetime)
+#' library(readr)
+#' df <- read_csv(system.file("extdata", "test_data.csv", package = "stopr"))
+#' with(df, find_stops(latitude, longitude, datetime))
 #' }
 find_stops <- function(latitude, longitude, datetime, stop_min_duration_s = 10,
                        digits = 3, k = 3) {

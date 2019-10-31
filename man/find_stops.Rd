@@ -39,7 +39,9 @@ observations per stop.
 
 \examples{
 \dontrun{
-find_stops(latitude, longitude, datetime)
+library(readr)
+df <- read_csv(system.file("extdata", "test_data.csv", package = "stopr"))
+with(df, find_stops(latitude, longitude, datetime))
 }
 }
 \keyword{GPS,}
