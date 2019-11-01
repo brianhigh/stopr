@@ -10,13 +10,13 @@ find_stops(x, stop_min_duration_s = 10, digits = 3, k = 3)
 \item{x}{(data.frame) GPS dataset.}
 
 \item{stop_min_duration_s}{(integer) Minimum stop duration cutoff in seconds. 
-(Default: 10)}
+(Must be greater than k. Default: 10)}
 
 \item{digits}{(integer) Decimal places used for rounding. 
-(Default: 3)}
+(Must be 0 or greater. Default: 3)}
 
 \item{k}{(integer) Window length for rolling median. 
-(Must be odd. Default: 3)}
+(Must be odd, 3 or greater. Default: 3)}
 }
 \value{
 (tibble) The coordinates and timestamps of the identified stops, 
