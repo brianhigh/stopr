@@ -26,8 +26,7 @@ This is a basic example which shows you how to use `find_stops()`:
 library(readr)
 library(stopr)
 df <- read_csv(data_file)
-stops <- with(df, find_stops(latitude, longitude, datetime,
-                    stop_min_duration_s = 20, k = 5))
+stops <- find_stops(df, stop_min_duration_s = 20, k = 5)
 ```
 
 Where...

@@ -4,21 +4,19 @@
 \alias{find_stops}
 \title{Find Stops}
 \usage{
-find_stops(latitude, longitude, datetime, stop_min_duration_s = 10,
-  digits = 3, k = 3)
+find_stops(x, stop_min_duration_s = 10, digits = 3, k = 3)
 }
 \arguments{
-\item{latitude}{(numeric) GPS Latitude.}
+\item{x}{(data.frame) GPS dataset.}
 
-\item{longitude}{(numeric) GPS Longitude.}
+\item{stop_min_duration_s}{(integer) Minimum stop duration cutoff in seconds. 
+(Default: 10)}
 
-\item{datetime}{(datetime) GPS Timestamp.}
+\item{digits}{(integer) Decimal places used for rounding. 
+(Default: 3)}
 
-\item{stop_min_duration_s}{(integer) Minimum stop duration cutoff in seconds.}
-
-\item{digits}{(integer) Decimal places used for rounding.}
-
-\item{k}{(integer) Window length for rolling median. (Must be odd.)}
+\item{k}{(integer) Window length for rolling median. 
+(Must be odd. Default: 3)}
 }
 \value{
 (tibble) The coordinates and timestamps of the identified stops, 
@@ -35,13 +33,19 @@ to reduce noise. For this purpose, rounding is to \code{digits} decimal places.
 The stop duration cutoff \code{stop_min_duration_s} is in seconds, assuming
 one observation per second. Otherwise, consider this as the minimum number of
 observations per stop.
+
+The GPS dataset can be a data.frame, tibble, data.table, etc., or any other 
+object of class data.frame or inherits from class data.drame. It must 
+include "latitude" (numeric), "longitude" (numeric) and "datetime" (datetime) 
+variables. If the variables are present, they will be converted to the 
+expected data types before stop detection is performed.
 }
 
 \examples{
 \dontrun{
 library(readr)
 df <- read_csv(system.file("extdata", "test_data.csv", package = "stopr"))
-with(df, find_stops(latitude, longitude, datetime))
+find_stops(df)
 }
 }
 \keyword{GPS,}

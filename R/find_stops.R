@@ -1,12 +1,13 @@
 #' Find Stops
 #'
 #' Find stops made in a route given coordinates and timestamps from a GPS track.
-#' @param latitude (numeric) GPS Latitude.
-#' @param longitude (numeric) GPS Longitude.
-#' @param datetime (datetime) GPS Timestamp.
-#' @param stop_min_duration_s (integer) Minimum stop duration cutoff in seconds.
-#' @param digits (integer) Decimal places used for rounding.
-#' @param k (integer) Window length for rolling median. (Must be odd.)
+#' @param x (data.frame) GPS dataset.
+#' @param stop_min_duration_s (integer) Minimum stop duration cutoff in seconds. 
+#'     (Default: 10)
+#' @param digits (integer) Decimal places used for rounding. 
+#'     (Default: 3)
+#' @param k (integer) Window length for rolling median. 
+#'     (Must be odd. Default: 3)
 #' @return (tibble) The coordinates and timestamps of the identified stops, 
 #'     along with the stop durations (integer), will be returned as a tibble.
 #' @keywords GPS, stops
@@ -17,25 +18,33 @@
 #' The stop duration cutoff \code{stop_min_duration_s} is in seconds, assuming
 #' one observation per second. Otherwise, consider this as the minimum number of
 #' observations per stop.
+#' 
+#' The GPS dataset can be a data.frame, tibble, data.table, etc., or any other 
+#' object of class data.frame or inherits from class data.drame. It must 
+#' include "latitude" (numeric), "longitude" (numeric) and "datetime" (datetime) 
+#' variables. If the variables are present, they will be converted to the 
+#' expected data types before stop detection is performed.
 #' @examples
 #' \dontrun{
 #' library(readr)
 #' df <- read_csv(system.file("extdata", "test_data.csv", package = "stopr"))
-#' with(df, find_stops(latitude, longitude, datetime))
+#' find_stops(df)
 #' }
-find_stops <- function(latitude, longitude, datetime, stop_min_duration_s = 10,
-                       digits = 3, k = 3) {
-  tibble::tibble(latitude = as.numeric(latitude),
-         longitude = as.numeric(longitude),
-         datetime = lubridate::as_datetime(datetime)) %>%
-    dplyr::mutate_at(.vars = dplyr::vars(latitude, longitude),
+find_stops <- function(x, stop_min_duration_s = 10, digits = 3, k = 3) {
+  vars <- c('datetime', 'latitude', 'longitude')
+  if ("data.frame" %in% class(x) & identical(vars, intersect(vars, names(x)))) {
+    x %>% dplyr::mutate(latitude = as.numeric(latitude),
+                        longitude = as.numeric(longitude),
+                        datetime = lubridate::as_datetime(datetime)) %>%
+      dplyr::mutate_at(.vars = dplyr::vars(latitude, longitude),
             .funs = list(rnd = ~round(zoo::rollmedianr(., k, NA), digits))) %>%
-    dplyr::mutate(loc = paste(latitude_rnd, longitude_rnd, sep = ',')) %>%
-    dplyr::group_by(runid = rle(loc)$lengths %>% rep(seq_along(.), .)) %>%
-    dplyr::summarise(start = min(datetime), end = max(datetime),
-              latitude = mean(latitude), longitude = mean(longitude)) %>%
-    dplyr::mutate(duration = as.numeric(end - start)) %>%
-    dplyr::filter(duration >= stop_min_duration_s) %>% 
-    dplyr::select(-runid) %>% 
-    tidyr::drop_na()
+      dplyr::mutate(loc = paste(latitude_rnd, longitude_rnd, sep = ',')) %>%
+      dplyr::group_by(stopid = rle(loc)$lengths %>% rep(seq_along(.), .)) %>%
+      dplyr::summarise(start = min(datetime), end = max(datetime),
+                latitude = mean(latitude), longitude = mean(longitude)) %>%
+      dplyr::mutate(duration = as.numeric(end - start)) %>%
+      dplyr::filter(duration >= stop_min_duration_s) %>% 
+      dplyr::select(-stopid) %>% 
+      tidyr::drop_na()
+  }
 }

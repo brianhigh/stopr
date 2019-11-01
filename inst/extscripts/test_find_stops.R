@@ -20,7 +20,7 @@ plot_track_and_stops <- function(data_file = file.path("test_data.csv")) {
     df <- read_csv(data_file)
 
     # Find the stops on the route.
-    stops <- with(df, find_stops(latitude, longitude, datetime))
+    stops <- find_stops(df)
 
     # Prepare a data frame to use for making the bounding box of the basemap.
     center_lat <- mean(range(df$latitude))
