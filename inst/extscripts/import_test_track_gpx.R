@@ -15,7 +15,7 @@ pacman::p_load(tibble, plotKML, dplyr, lubridate, readr)
 # Import GPX file.
 df <- as_tibble(readGPX("test_data.gpx")$tracks[[1]][[1]]) %>% 
   select(-extensions, -ele) %>% 
-  rename(longitude=lon, latitude=lat, datetime=time) %>% 
+  rename(longitude = lon, latitude = lat, datetime = time) %>% 
   mutate(datetime = as_datetime(datetime))
 
 # Save as CSV.

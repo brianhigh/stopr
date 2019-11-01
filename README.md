@@ -18,6 +18,7 @@ devtools::install_github("brianhigh/stopr")
 This is a basic example which shows you how to use `find_stops()`:
 
 ``` r
+library(readr)
 library(stopr)
 df <- read_csv(data_file)
 stops <- with(df, find_stops(latitude, longitude, datetime,
