@@ -23,3 +23,8 @@ df <- read_csv(data_file)
 stops <- with(df, find_stops(latitude, longitude, datetime,
                     stop_min_duration_s = 20, k = 5))
 ```
+
+`stopr` output can be plotted on maps like the one below, showing stops 
+in red, with the size of the point proportional to the duration of the stop.
+
+![Track in orange with stops in red](images/test_data.jpg)

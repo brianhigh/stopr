@@ -35,6 +35,7 @@ find_stops <- function(latitude, longitude, datetime, stop_min_duration_s = 10,
     dplyr::summarise(start = min(datetime), end = max(datetime),
               latitude = mean(latitude), longitude = mean(longitude)) %>%
     dplyr::mutate(duration = as.numeric(end - start)) %>%
-    dplyr::filter(duration >= stop_min_duration_s) %>%
+    dplyr::filter(duration >= stop_min_duration_s) %>% 
+    dplyr::select(-runid) %>% 
     tidyr::drop_na()
 }
