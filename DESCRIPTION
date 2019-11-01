@@ -8,7 +8,7 @@ Authors@R:
            email = "bhigh@live.com")
 Description: Given latitude, longitude, and timestamp data from a GPS track, 
     find the stops on the route.
-Depends: R (>= 3.5.1)
+Depends: R (>= 3.6.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
