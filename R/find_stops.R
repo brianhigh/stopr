@@ -20,7 +20,7 @@
 #' observations per stop.
 #' 
 #' The GPS dataset can be a data.frame, tibble, data.table, etc., or any other 
-#' object of class data.frame or inherits from class data.drame. It must 
+#' object of class data.frame or that inherits from class data.drame. It must 
 #' include "latitude" (numeric), "longitude" (numeric) and "datetime" (datetime) 
 #' variables. If the variables are present, they will be converted to the 
 #' expected data types before stop detection is performed.
@@ -40,7 +40,7 @@ find_stops <- function(x, stop_min_duration_s = 10, digits = 3, k = 3) {
   k <- as.integer(k)
   
   # Find stops in x if expected variables are present and parameters are valid.
-  if ("data.frame" %in% class(x) & identical(vars, intersect(vars, names(x))) &
+  if (is.data.frame(x) & identical(vars, intersect(vars, names(x))) &
       stop_min_duration_s > k & digits >= 0 & k >= 3 & k %% 2 == 1) {
     x %>% dplyr::mutate(latitude = as.numeric(latitude),
                         longitude = as.numeric(longitude),

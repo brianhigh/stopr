@@ -35,7 +35,7 @@ one observation per second. Otherwise, consider this as the minimum number of
 observations per stop.
 
 The GPS dataset can be a data.frame, tibble, data.table, etc., or any other 
-object of class data.frame or inherits from class data.drame. It must 
+object of class data.frame or that inherits from class data.drame. It must 
 include "latitude" (numeric), "longitude" (numeric) and "datetime" (datetime) 
 variables. If the variables are present, they will be converted to the 
 expected data types before stop detection is performed.
