@@ -1,8 +1,6 @@
 # stopr
 
-The goal of stopr is to provide a utility function, `find_stops()`. Given 
-latitude, longitude, and timestamp data from a GPS track, `find_stops()` will 
-find the stops on the route and return them as a `tibble`.
+`stopr` is an R package providing stop detection functions for GPS track data. 
 
 ## Installation
 
@@ -12,6 +10,13 @@ You can install the development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("brianhigh/stopr")
 ```
+
+## Functions
+
+The function `find_stops()` will find stops on a route and return them as rows
+of a `tibble`. The function uses the latitude, longitude, and timestamp 
+variables from a GPS track dataset. Function options provide for control 
+of operation, including a minimum stop duration cutoff and smoothing parameters.
 
 ## Example
 
@@ -24,6 +29,13 @@ df <- read_csv(data_file)
 stops <- with(df, find_stops(latitude, longitude, datetime,
                     stop_min_duration_s = 20, k = 5))
 ```
+
+Where...
+
+* The stop duration cutoff, `stop_min_duration_s`, was set to a minimum of 20 seconds.
+* The window size, `k`, for the rolling median (smoothing) was set to 5 seconds.
+
+## Applications
 
 `stopr` output can be plotted on maps like the one below, showing stops 
 in red, with the size of the point proportional to the duration of the stop.
