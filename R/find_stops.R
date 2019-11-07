@@ -46,7 +46,7 @@ find_stops <- function(.data, stop_min_duration_s = 10, digits = 3, k = 3,
   k <- as.integer(k)
   
   # Find stops in x if expected variables are present and parameters are valid.
-  if (is.data.frame(.data) & 
+  if (is.data.frame(.data) & is.vector(.vars) & length(.vars) == 3 & 
       identical(.varnames, intersect(.varnames, names(.vars))) &
       identical(as.vector(.vars), intersect(.vars, names(.data))) & 
       stop_min_duration_s > k & digits >= 0 & k >= 3 & k %% 2 == 1) {
