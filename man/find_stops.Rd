@@ -4,10 +4,10 @@
 \alias{find_stops}
 \title{Find Stops}
 \usage{
-find_stops(x, stop_min_duration_s = 10, digits = 3, k = 3)
+find_stops(.data, stop_min_duration_s = 10, digits = 3, k = 3)
 }
 \arguments{
-\item{x}{(data.frame) GPS dataset.}
+\item{.data}{(data.frame) GPS dataset.}
 
 \item{stop_min_duration_s}{(integer) Minimum stop duration cutoff in seconds. 
 (Must be greater than k. Default: 10)}
