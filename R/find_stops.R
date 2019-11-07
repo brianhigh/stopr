@@ -8,6 +8,9 @@
 #'     (Must be 0 or greater. Default: 3)
 #' @param k (integer) Window length for rolling median. 
 #'     (Must be odd, 3 or greater. Default: 3)
+#' @param .vars (named character vector) The datetime, latitude, and longitude 
+#'     variables to be found within \code{.data}. 
+#'     (Default: \code{c(time = 'datetime', lat = 'latitude', lon = 'longitude')})
 #' @return (tibble) The coordinates and timestamps of the identified stops, 
 #'     along with the stop durations (integer), will be returned as a tibble.
 #' @keywords GPS, stops
@@ -21,18 +24,21 @@
 #' 
 #' The GPS dataset can be a data.frame, tibble, data.table, etc., or any other 
 #' object of class data.frame or that inherits from class data.drame. It must 
-#' include "latitude" (numeric), "longitude" (numeric) and "datetime" (datetime) 
-#' variables. If the variables are present, they will be converted to the 
-#' expected data types before stop detection is performed.
+#' include the variables named in ".vars" which are "datetime" (datetime), 
+#' "latitude" (numeric), and "longitude" (numeric) by default. If the variables 
+#' are present within ".data", they will be converted to the expected data types 
+#' before stop detection is performed.
 #' @examples
 #' \dontrun{
 #' library(readr)
 #' df <- read_csv(system.file("extdata", "test_data.csv", package = "stopr"))
 #' find_stops(df)
 #' }
-find_stops <- function(.data, stop_min_duration_s = 10, digits = 3, k = 3) {
-  # Define expected variables for data.frame '.data'.
-  .vars <- c('datetime', 'latitude', 'longitude')
+find_stops <- function(.data, stop_min_duration_s = 10, digits = 3, k = 3,
+                       .vars = c(time = 'datetime', lat = 'latitude', 
+                                 lon = 'longitude')) {
+  # Define expected names in ".vars".
+  .varnames <- c('time', 'lat', 'lon')
   
   # Convert other parameters to expected data types.
   stop_min_duration_s <- as.integer(stop_min_duration_s)
@@ -40,11 +46,15 @@ find_stops <- function(.data, stop_min_duration_s = 10, digits = 3, k = 3) {
   k <- as.integer(k)
   
   # Find stops in x if expected variables are present and parameters are valid.
-  if (is.data.frame(.data) & identical(.vars, intersect(.vars, names(.data))) &
+  if (is.data.frame(.data) & 
+      identical(.varnames, intersect(.varnames, names(.vars))) &
+      identical(as.vector(.vars), intersect(.vars, names(.data))) & 
       stop_min_duration_s > k & digits >= 0 & k >= 3 & k %% 2 == 1) {
-    .data %>% dplyr::mutate(latitude = as.numeric(latitude),
-                            longitude = as.numeric(longitude),
-                            datetime = lubridate::as_datetime(datetime)) %>%
+    .data %>% 
+      dplyr::mutate(
+        latitude = as.numeric(.data[[.vars[['lat']]]]),
+        longitude = as.numeric(.data[[.vars[['lon']]]]),
+        datetime = lubridate::as_datetime(.data[[.vars[['time']]]])) %>%
       dplyr::mutate_at(.vars = dplyr::vars(latitude, longitude),
             .funs = list(rnd = ~round(zoo::rollmedianr(., k, NA), digits))) %>%
       dplyr::mutate(loc = paste(latitude_rnd, longitude_rnd, sep = ',')) %>%

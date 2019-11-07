@@ -4,7 +4,8 @@
 \alias{find_stops}
 \title{Find Stops}
 \usage{
-find_stops(.data, stop_min_duration_s = 10, digits = 3, k = 3)
+find_stops(.data, stop_min_duration_s = 10, digits = 3, k = 3,
+  .vars = c(time = "datetime", lat = "latitude", lon = "longitude"))
 }
 \arguments{
 \item{.data}{(data.frame) GPS dataset.}
@@ -17,6 +18,10 @@ find_stops(.data, stop_min_duration_s = 10, digits = 3, k = 3)
 
 \item{k}{(integer) Window length for rolling median. 
 (Must be odd, 3 or greater. Default: 3)}
+
+\item{.vars}{(named character vector) The datetime, latitude, and longitude 
+variables to be found within \code{.data}. 
+(Default: \code{c(time = 'datetime', lat = 'latitude', lon = 'longitude')})}
 }
 \value{
 (tibble) The coordinates and timestamps of the identified stops, 
@@ -36,9 +41,10 @@ observations per stop.
 
 The GPS dataset can be a data.frame, tibble, data.table, etc., or any other 
 object of class data.frame or that inherits from class data.drame. It must 
-include "latitude" (numeric), "longitude" (numeric) and "datetime" (datetime) 
-variables. If the variables are present, they will be converted to the 
-expected data types before stop detection is performed.
+include the variables named in ".vars" which are "datetime" (datetime), 
+"latitude" (numeric), and "longitude" (numeric) by default. If the variables 
+are present within ".data", they will be converted to the expected data types 
+before stop detection is performed.
 }
 
 \examples{
