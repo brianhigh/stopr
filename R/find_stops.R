@@ -47,8 +47,8 @@ find_stops <- function(.data, stop_min_duration_s = 10, digits = 3, k = 3,
   
   # Find stops in x if expected variables are present and parameters are valid.
   if (is.data.frame(.data) & is.vector(.vars) & length(.vars) == 3 & 
-      identical(.varnames, intersect(.varnames, names(.vars))) &
-      identical(as.vector(.vars), intersect(.vars, names(.data))) & 
+      length(setdiff(.varnames, names(.vars))) == 0 & 
+      length(setdiff(.vars, names(.data))) == 0 &
       stop_min_duration_s > k & digits >= 0 & k >= 3 & k %% 2 == 1) {
     .data %>% 
       dplyr::mutate(
